@@ -1,3 +1,5 @@
+const { namespaceWrapper } = require('./_koiiNode/koiiNode');
+
 function setupRoutes(app) {
   //  Write your Express Endpoints here.
   //  Ex. app.get('/value', async (req, res) => {})

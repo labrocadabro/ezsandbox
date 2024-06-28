@@ -3,6 +3,7 @@ const fs = require('fs');
 require('dotenv').config();
 const Debugger = require('./debugger');
 const Tail = require('tail').Tail;
+const path = require('path');
 
 const startWatching = async () => {
   console.log('Watching for file changes...');
@@ -59,6 +60,17 @@ const copyWebpackedFile = async () => {
 /* tail logs */
 const tailLogs = async (desktopNodeLogPath, keywords, taskID) => {
   console.log('Watchings logs for messages containing ', keywords);
+
+  // Extract the directory path from the full log file path
+  const dirPath = path.dirname(desktopNodeLogPath);
+
+  // Check if the directory exists, create it if it doesn't
+  try {
+    await fs.promises.access(dirPath, fs.constants.F_OK);
+  } catch (dirErr) {
+    console.log(`Directory not found, creating ${dirPath}`);
+    await fs.promises.mkdir(dirPath, { recursive: true });
+  }
 
   // Ensure the log file exists, or create it if it doesn't
   try {
